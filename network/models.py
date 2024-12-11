@@ -20,9 +20,9 @@ class Like(models.Model):
     def __str__(self):
         return f"Like"
 
-class Following(models.Model):
+class Follow(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="following")
     following = models.ForeignKey(User, on_delete=models.CASCADE, related_name="followers")
 
     def __str__(self):
-        return f"Following"
+        return f"Follow"

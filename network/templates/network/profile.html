@@ -8,10 +8,20 @@
     <div class="card p-3 mb-4">
         <h4 class="mb-2">{{ user.username }}</h4>
         <p>
-            <strong>Followers:</strong> 0 <br>
-            <strong>Following:</strong> 0
+            <strong>Followers:</strong> {{ user.followers.count }} <br>
+            <strong>Following:</strong> {{ user.following.count }}
         </p>
-        <p><button class="btn btn-primary">Follow</button></p>
+        {% if request.user != user %}
+            <p>
+                <button class="btn btn-primary">
+                    {% if request.user in user.followers.all %}
+                        Unfollow
+                    {% else %}
+                        Follow
+                    {% endif %}
+                </button>
+            </p>
+        {% endif %}
     </div>
 
     <!--All posts-->
