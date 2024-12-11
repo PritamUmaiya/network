@@ -6,16 +6,23 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User
+from .models import User, Post
 
 
 def index(request):
-    return render(request, "network/index.html")
+    posts = Post.objects.all()
+    return render(request, "network/index.html", {
+        "posts": posts
+    })
 
 @login_required
 @require_POST
 def new_post(request):
-    
+    user = request.user
+    content = request.POST["post"]
+    post = Post(user=user, content=content)
+    post.save()
+    return HttpResponseRedirect(reverse("index"))
 
 def login_view(request):
     if request.method == "POST":
