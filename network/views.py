@@ -1,4 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
@@ -10,6 +12,10 @@ from .models import User
 def index(request):
     return render(request, "network/index.html")
 
+@login_required
+@require_POST
+def new_post(request):
+    
 
 def login_view(request):
     if request.method == "POST":
