@@ -11,6 +11,18 @@ class Post(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
-        return f"{self.user}: {self.content}"
+        return f"Post"
 
-        
+class Like(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="likes")
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="likes")
+
+    def __str__(self):
+        return f"Like"
+
+class Following(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="following")
+    following = models.ForeignKey(User, on_delete=models.CASCADE, related_name="followers")
+
+    def __str__(self):
+        return f"Following"
