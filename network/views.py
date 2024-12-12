@@ -16,6 +16,18 @@ def index(request):
     })
 
 @login_required
+def following(request):
+    """Posts of users the user follows"""
+    user = request.user
+    following = user.following.all()
+    posts = []
+    for follow in following:
+        posts += follow.posts.all()
+    return render(request, "network/following.html", {
+        "posts": posts
+    })
+
+@login_required
 @require_POST
 def new_post(request):
     user = request.user
