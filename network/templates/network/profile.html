@@ -8,13 +8,13 @@
     <div class="card p-3 mb-4">
         <h4 class="mb-2">{{ user.username }}</h4>
         <p>
-            <strong>Followers:</strong> {{ user.followers.count }} <br>
+            <strong>Followers:</strong> <span id="followerCount">{{ user.followers.count }}</span> <br>
             <strong>Following:</strong> {{ user.following.count }}
         </p>
         {% if request.user != user %}
             <p>
-                <button class="btn btn-primary">
-                    {% if request.user in user.followers.all %}
+                <button class="btn btn-primary" id="followBtn" data-user="{{ user.id }}">
+                    {% if request.user in followers %}
                         Unfollow
                     {% else %}
                         Follow
