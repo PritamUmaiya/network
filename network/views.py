@@ -20,10 +20,8 @@ def index(request):
 def following(request):
     """Posts of users the user follows"""
     user = request.user
-    following = user.following.all()
-    posts = []
-    for follow in following:
-        posts += follow.posts.all()
+    following = [follow.following for follow in Follow.objects.filter(user=user)]
+    posts = Post.objects.filter(user__in=following).order_by("-timestamp")
     return render(request, "network/following.html", {
         "posts": posts
     })

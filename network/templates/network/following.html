@@ -5,6 +5,11 @@
         <h3>Posts you follows</h3>
     </div>
 
-    <p>TO D0</p>
+    <!--Display all posts-->
+    {% for post in posts %}
+       <p>Post</p>
+    {% empty %}
+        <p class="text-center">No posts.</p>
+    {% endfor %}
 
 {% endblock %}
