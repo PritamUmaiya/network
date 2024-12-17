@@ -5,6 +5,7 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
+from django.core.paginator import Paginator
 
 from .models import User, Post, Follow
 
@@ -12,8 +13,12 @@ from .models import User, Post, Follow
 def index(request):
     # Display latest post first
     posts = Post.objects.all().order_by("-timestamp")
+    paginator = Paginator(posts, 10) # Show 10 contacts per page.
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     return render(request, "network/index.html", {
-        "posts": posts
+        "posts": posts,
+        "page_obj": page_obj
     })
 
 @login_required
@@ -22,8 +27,12 @@ def following(request):
     user = request.user
     following = [follow.following for follow in Follow.objects.filter(user=user)]
     posts = Post.objects.filter(user__in=following).order_by("-timestamp")
+    paginator = Paginator(posts, 10) # Show 10 contacts per page.
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     return render(request, "network/following.html", {
-        "posts": posts
+        "posts": posts,
+        "page_ojb": page_obj
     })
 
 @login_required
@@ -39,10 +48,14 @@ def profile(request, username):
     user = User.objects.get(username=username)
     followers = [follower.user for follower in Follow.objects.filter(following=user)]
     posts = user.posts.all().order_by("-timestamp")
+    paginator = Paginator(posts, 10) # Show 10 contacts per page.
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     return render(request, "network/profile.html", {
         "user": user,
         "followers": followers,
-        "posts": posts
+        "posts": posts,
+        "page_obj": page_obj
     })
 
 @login_required
