@@ -44,6 +44,18 @@ def new_post(request):
     post.save()
     return HttpResponseRedirect(reverse("index"))
 
+@login_required
+@require_POST
+def edit_post(request):
+    user = request.user
+    post_id = request.POST["post_id"]
+    post_content = request.POST["post_content"]
+    post = Post.objects.get(pk=post_id, user=user)
+    post.content = post_content
+    post.save()
+    return JsonResponse({"message": "updated"})
+
+
 def profile(request, username):
     user = User.objects.get(username=username)
     followers = [follower.user for follower in Follow.objects.filter(following=user)]
